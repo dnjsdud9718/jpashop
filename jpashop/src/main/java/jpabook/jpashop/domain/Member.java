@@ -11,9 +11,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-import jpabook.jpashop.domain.Address;
-import jpabook.jpashop.domain.Order;
-
 @Entity
 @Getter
 @Setter
@@ -24,7 +21,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    private String username;
+    private String name;
 
     @Embedded
     private Address address;
@@ -32,8 +29,6 @@ public class Member {
     @OneToMany(mappedBy = "member") // order table에 있는 member 필드에 의해 매핑 됨을 표시
     private List<Order> orders = new ArrayList<>();
 
-    public Member() {
-
-    }
+    public Member() {}
 
 }
