@@ -33,17 +33,11 @@ public class OrderRepository {
     }
 
     /**
-     * 결론은 QueryDSL
-     */
-    public List<Order> findAll(OrderSearch orderSearch) {
-        
-    }
-    /**
      * 단순 문자 합치기
      * 개발자 실수가 많을 수 있다.
      * 코드가 길어진다.
      */
-    public List<Order> findAllByString(OrderSearch orderSearch) {
+    public List<Order> findAll(OrderSearch orderSearch) {
         String jpql = "select o from Order o join o.member m";
         boolean isFirstCondition = true;
 
@@ -64,7 +58,7 @@ public class OrderRepository {
             } else {
                 jpql += " and";
             }
-            jpql += " o.name like :name";
+            jpql += " m.name like :name";
         }
 
         TypedQuery<Order> query = em.createQuery(jpql, Order.class)
