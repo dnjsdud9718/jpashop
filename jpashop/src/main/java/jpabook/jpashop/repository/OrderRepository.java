@@ -10,6 +10,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderSearch;
 import lombok.RequiredArgsConstructor;
@@ -96,5 +97,50 @@ public class OrderRepository {
         cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000);
         return query.getResultList();
+    }
+
+
+    public List<Order> findAllWithMemberDelivery() {
+        String jpql = "select o from Order o"
+            + " join fetch o.member m"
+            + " join fetch o.delivery d";
+
+        return em.createQuery(jpql, Order.class).getResultList();
+    }
+
+    public List<OrderSimpleQueryDto> findOrderDtos() {
+        String jpql = "select new jpabook.jpashop.repository.OrderSimpleQueryDto("
+            + " o.id,"
+            + " m.name,"
+            + " o.orderDate,"
+            + " o.status,"
+            + " d.address)"
+            + " from Order o"
+            + " join o.member m"
+            + " join o.delivery d";
+        return em.createQuery(jpql, OrderSimpleQueryDto.class)
+            .getResultList();
+    }
+
+    public List<Order> findAllWithItem() {
+        String jpql = "select distinct o from Order o"
+            + " join fetch o.member m"
+            + " join fetch o.delivery d"
+            + " join fetch o.orderItems oi"
+            + " join fetch oi.item i";
+        return em.createQuery(jpql, Order.class)
+            .getResultList();
+
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        String jpql = "select o from Order o"
+            + " join fetch o.member m"
+            + " join fetch o.delivery d";
+
+        return em.createQuery(jpql, Order.class)
+            .setFirstResult(offset)
+            .setMaxResults(limit)
+            .getResultList();
     }
 }

@@ -40,6 +40,8 @@ public class Order {
     /**
      * em.persist(orderItemA) em.persist(orderItemB) em.persist(orderItemC) persist(order) ->
      * cascade가 있으면 persist(order)만 persist하면 된다(persist가 전파된다.)
+     *
+     * ...ToMany -> default lazy loading
      */
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
